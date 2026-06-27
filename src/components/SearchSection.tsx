@@ -17,6 +17,25 @@ const PRESETS = [
   { title: "Get Lucky", artist: "Daft Punk", query: "Get Lucky Daft Punk" },
 ];
 
+const getApiUrl = (path: string): string => {
+  const base = ((import.meta as any).env.VITE_API_URL || "").replace(/\/$/, "");
+  if (base) {
+    return `${base}${path}`;
+  }
+  
+  if (typeof window !== "undefined") {
+    const host = window.location.host;
+    const isDevOrBackend = host.includes("localhost:3000") || 
+                           host.includes("127.0.0.1:3000") || 
+                           host.includes("asia-east1.run.app");
+    if (!isDevOrBackend) {
+      return `https://ais-pre-lvdzvtlo5rrfo4snjogvdt-411097741215.asia-east1.run.app${path}`;
+    }
+  }
+  
+  return path;
+};
+
 export default function SearchSection({
   onSelectSong,
   isLoading,
@@ -41,7 +60,7 @@ export default function SearchSection({
     setHasSearched(true);
 
     try {
-      const response = await fetch("/api/search", {
+      const response = await fetch(getApiUrl("/api/search"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: title, artist }),

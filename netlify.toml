@@ -1,0 +1,13 @@
+# Netlify configuration file
+# This file enables seamless routing and reverse proxy redirects when deploying on Netlify.
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://ais-pre-lvdzvtlo5rrfo4snjogvdt-411097741215.asia-east1.run.app/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
