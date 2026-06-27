@@ -1126,7 +1126,7 @@ app.post("/api/search", async (req, res) => {
         }
 
         const response = await retryWithBackoff(() => ai.models.generateContent({
-          model: "gemini-2.5-flash",
+          model: "gemini-3.5-flash",
           contents: promptText,
           config: {
             responseMimeType: "application/json",
@@ -1395,7 +1395,7 @@ app.post("/api/recommend", async (req, res) => {
       - Has a specific 'matchingReason' explaining why it shares the exact genre blend or vibe with "${title}".`;
 
       const response = await retryWithBackoff(() => ai.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-3.5-flash",
         contents: promptText,
         config: {
           responseMimeType: "application/json",

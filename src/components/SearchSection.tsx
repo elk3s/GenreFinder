@@ -18,21 +18,20 @@ const PRESETS = [
 ];
 
 const getApiUrl = (path: string): string => {
+  if (typeof window !== "undefined") {
+    const host = window.location.host;
+    const isLocalOrPlatform = host.includes("localhost") || 
+                              host.includes("127.0.0.1") || 
+                              host.includes("asia-east1.run.app");
+    if (isLocalOrPlatform) {
+      return path;
+    }
+  }
+  
   const base = ((import.meta as any).env.VITE_API_URL || "").replace(/\/$/, "");
   if (base) {
     return `${base}${path}`;
   }
-  
-  if (typeof window !== "undefined") {
-    const host = window.location.host;
-    const isDevOrBackend = host.includes("localhost:3000") || 
-                           host.includes("127.0.0.1:3000") || 
-                           host.includes("asia-east1.run.app");
-    if (!isDevOrBackend) {
-      return `https://ais-pre-lvdzvtlo5rrfo4snjogvdt-411097741215.asia-east1.run.app${path}`;
-    }
-  }
-  
   return path;
 };
 
@@ -66,14 +65,21 @@ export default function SearchSection({
         body: JSON.stringify({ query: title, artist }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to analyze song.");
+      let responseData: any;
+      const responseText = await response.text();
+      try {
+        responseData = JSON.parse(responseText);
+      } catch (e) {
+        console.error("Non-JSON response from server during search:", responseText);
+        throw new Error(`Invalid response received from server (non-JSON). Status: ${response.status}`);
       }
 
-      const data = await response.json();
-      if (data.matches && data.matches.length > 0) {
-        setMatches(data.matches);
+      if (!response.ok) {
+        throw new Error(responseData?.error || `Search failed with status ${response.status}`);
+      }
+
+      if (responseData.matches && responseData.matches.length > 0) {
+        setMatches(responseData.matches);
       } else {
         throw new Error("No songs found matching that description. Please try another search.");
       }

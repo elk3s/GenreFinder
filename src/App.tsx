@@ -6,6 +6,7 @@ import SongProfile from "./components/SongProfile";
 import SuggestionsList from "./components/SuggestionsList";
 import PlaylistWorkspace from "./components/PlaylistWorkspace";
 import AudioVisualizer from "./components/AudioVisualizer";
+import AuthModal from "./components/AuthModal";
 import { SongMatch, SongSuggestion, PlaylistSong } from "./types";
 import { globalSynthPlayer } from "./lib/synthPlayer";
 import { auth, googleProvider, signInWithPopup, signOut, onAuthStateChanged, User } from "./lib/firebase";
@@ -13,21 +14,20 @@ import { savePlaylistToCloud, fetchPlaylistsFromCloud, deletePlaylistFromCloud, 
 import { LogIn, LogOut, Cloud, Loader2 } from "lucide-react";
 
 const getApiUrl = (path: string): string => {
+  if (typeof window !== "undefined") {
+    const host = window.location.host;
+    const isLocalOrPlatform = host.includes("localhost") || 
+                              host.includes("127.0.0.1") || 
+                              host.includes("asia-east1.run.app");
+    if (isLocalOrPlatform) {
+      return path;
+    }
+  }
+  
   const base = ((import.meta as any).env.VITE_API_URL || "").replace(/\/$/, "");
   if (base) {
     return `${base}${path}`;
   }
-  
-  if (typeof window !== "undefined") {
-    const host = window.location.host;
-    const isDevOrBackend = host.includes("localhost:3000") || 
-                           host.includes("127.0.0.1:3000") || 
-                           host.includes("asia-east1.run.app");
-    if (!isDevOrBackend) {
-      return `https://ais-pre-lvdzvtlo5rrfo4snjogvdt-411097741215.asia-east1.run.app${path}`;
-    }
-  }
-  
   return path;
 };
 
@@ -40,6 +40,7 @@ export default function App() {
 
   // Theme states
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [currentTheme, setCurrentTheme] = useState<string>(() => {
     return localStorage.getItem("genre_finder_theme") || "light-mineral";
   });
@@ -309,14 +310,21 @@ export default function App() {
         }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to generate suggestions.");
+      let responseData: any;
+      const responseText = await response.text();
+      try {
+        responseData = JSON.parse(responseText);
+      } catch (e) {
+        console.error("Non-JSON response from server during recommendation:", responseText);
+        throw new Error(`Invalid response received from server (non-JSON). Status: ${response.status}`);
       }
 
-      const data = await response.json();
-      if (data.suggestions) {
-        setSuggestions(data.suggestions);
+      if (!response.ok) {
+        throw new Error(responseData?.error || `Failed to generate suggestions. Status: ${response.status}`);
+      }
+
+      if (responseData.suggestions) {
+        setSuggestions(responseData.suggestions);
       } else {
         throw new Error("No suggestions were returned. Please try matching other genres.");
       }
@@ -441,7 +449,7 @@ export default function App() {
               </div>
             ) : (
               <button
-                onClick={handleSignInWithGoogle}
+                onClick={() => setIsAuthModalOpen(true)}
                 className="flex items-center gap-2 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-xl transition-all cursor-pointer text-xs font-bold shadow-xs"
               >
                 <LogIn className="w-3.5 h-3.5" />
@@ -536,7 +544,7 @@ export default function App() {
               onSaveToCloud={handleSaveToCloud}
               onLoadCloudPlaylist={handleLoadCloudPlaylist}
               onDeleteCloudPlaylist={handleDeleteCloudPlaylist}
-              onSignInWithGoogle={handleSignInWithGoogle}
+              onSignInWithGoogle={() => setIsAuthModalOpen(true)}
             />
           </div>
         </div>
@@ -728,6 +736,14 @@ export default function App() {
               </div>
             </motion.div>
           </div>
+        )}
+
+        {isAuthModalOpen && (
+          <AuthModal
+            isOpen={isAuthModalOpen}
+            onClose={() => setIsAuthModalOpen(false)}
+            onSignInWithGoogle={handleSignInWithGoogle}
+          />
         )}
       </AnimatePresence>
     </div>

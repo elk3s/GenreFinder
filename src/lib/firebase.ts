@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc, collection, getDocs, deleteDoc, addDoc, updateDoc } from "firebase/firestore";
 
 // Configuration loaded from firebase-applet-config.json
@@ -19,5 +19,5 @@ googleProvider.setCustomParameters({ prompt: "select_account" });
 
 export const db = getFirestore(app);
 
-export { signInWithPopup, signOut, onAuthStateChanged };
+export { signInWithPopup, signOut, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile };
 export type { User };
