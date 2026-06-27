@@ -1,0 +1,6 @@
+{
+  "name": "Music Genre Finder",
+  "description": "Identify song genres and build custom playlists with similar songs",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

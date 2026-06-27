@@ -1,0 +1,312 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Custom minimal scrollbar with theme-driven colors */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--theme-border-strong, #e4e4e7);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-text-tertiary, #d4d4d8);
+}
+
+/* ==========================================================================
+   THEME PALETTES & CONFIGURATIONS
+   ========================================================================== */
+
+/* 1. The Tech Core (Dark Performance) */
+.theme-dark-tech {
+  --theme-bg: #1F2326;
+  --theme-card: #2D3436;
+  --theme-border: #353C3E;
+  --theme-border-strong: #465154;
+  --theme-text-primary: #FFFFFF;
+  --theme-text-secondary: #E2E8F0;
+  --theme-text-tertiary: #94A3B8;
+  --theme-input-bg: #16191B;
+  --theme-btn-primary-bg: #00FFC2;
+  --theme-btn-primary-hover: #00D4A1;
+  --theme-btn-primary-text: #1F2326;
+  --theme-accent: #00FFC2;
+  --theme-accent-hover: #00D4A1;
+  --theme-accent-light: rgba(0, 255, 194, 0.15);
+  --theme-accent-text: #00FFC2;
+}
+
+/* 2. Mineral Neutrals & "Airy Luxury" (Default Root) */
+.theme-light-mineral, :root {
+  --theme-bg: #F2F2EE;
+  --theme-card: #ffffff;
+  --theme-border: #E5E5DF;
+  --theme-border-strong: #A8B0B2;
+  --theme-text-primary: #2C302E;
+  --theme-text-secondary: #5F6F52;
+  --theme-text-tertiary: #8E9591;
+  --theme-input-bg: #F9F9F6;
+  --theme-btn-primary-bg: #5F6F52;
+  --theme-btn-primary-hover: #4A573F;
+  --theme-btn-primary-text: #F2F2EE;
+  --theme-accent: #C2A58C;
+  --theme-accent-hover: #B19277;
+  --theme-accent-light: rgba(194, 165, 140, 0.15);
+  --theme-accent-text: #5F6F52;
+}
+
+/* 3. The Trustworthy Classic (High-Contrast Corporate) */
+.theme-light-corporate {
+  --theme-bg: #FFFFFF;
+  --theme-card: #F8FAFC;
+  --theme-border: #E2E8F0;
+  --theme-border-strong: #0A192F;
+  --theme-text-primary: #0A192F;
+  --theme-text-secondary: #1E3A5F;
+  --theme-text-tertiary: #64748B;
+  --theme-input-bg: #F1F5F9;
+  --theme-btn-primary-bg: #0A192F;
+  --theme-btn-primary-hover: #112240;
+  --theme-btn-primary-text: #FFFFFF;
+  --theme-accent: #E85D3F;
+  --theme-accent-hover: #D04A2D;
+  --theme-accent-light: rgba(232, 93, 63, 0.12);
+  --theme-accent-text: #E85D3F;
+}
+
+/* 4. The Nordic Night (Slate & Amber) */
+.theme-dark-nordic {
+  --theme-bg: #1E2229;
+  --theme-card: #282E38;
+  --theme-border: #313945;
+  --theme-border-strong: #414C5B;
+  --theme-text-primary: #F3F4F6;
+  --theme-text-secondary: #E2E8F0;
+  --theme-text-tertiary: #9CA3AF;
+  --theme-input-bg: #171B20;
+  --theme-btn-primary-bg: #D97706;
+  --theme-btn-primary-hover: #B45309;
+  --theme-btn-primary-text: #1E2229;
+  --theme-accent: #D97706;
+  --theme-accent-hover: #B45309;
+  --theme-accent-light: rgba(217, 119, 6, 0.15);
+  --theme-accent-text: #F59E0B;
+}
+
+/* ==========================================================================
+   THEMED UTILITY CLASS OVERRIDES
+   ========================================================================== */
+
+/* Apply page backgrounds to the root wrapper element */
+.theme-dark-tech, .theme-light-mineral, .theme-light-corporate, .theme-dark-nordic {
+  background-color: var(--theme-bg) !important;
+}
+
+/* Target card elements styled with bg-white */
+.theme-dark-tech .bg-white,
+.theme-light-mineral .bg-white,
+.theme-light-corporate .bg-white,
+.theme-dark-nordic .bg-white {
+  background-color: var(--theme-card) !important;
+}
+
+/* Target header and layout borders */
+.theme-dark-tech .border-zinc-100,
+.theme-light-mineral .border-zinc-100,
+.theme-light-corporate .border-zinc-100,
+.theme-dark-nordic .border-zinc-100 {
+  border-color: var(--theme-border) !important;
+}
+
+.theme-dark-tech .border-zinc-200,
+.theme-light-mineral .border-zinc-200,
+.theme-light-corporate .border-zinc-200,
+.theme-dark-nordic .border-zinc-200 {
+  border-color: var(--theme-border-strong) !important;
+}
+
+.theme-dark-tech .border-zinc-200\/50,
+.theme-light-mineral .border-zinc-200\/50,
+.theme-light-corporate .border-zinc-200\/50,
+.theme-dark-nordic .border-zinc-200\/50 {
+  border-color: var(--theme-border) !important;
+}
+
+/* Target background inputs and search frames */
+.theme-dark-tech .bg-zinc-50\/50,
+.theme-light-mineral .bg-zinc-50\/50,
+.theme-light-corporate .bg-zinc-50\/50,
+.theme-dark-nordic .bg-zinc-50\/50,
+.theme-dark-tech .bg-zinc-50\/30,
+.theme-light-mineral .bg-zinc-50\/30,
+.theme-light-corporate .bg-zinc-50\/30,
+.theme-dark-nordic .bg-zinc-50\/30,
+.theme-dark-tech .bg-zinc-50,
+.theme-light-mineral .bg-zinc-50,
+.theme-light-corporate .bg-zinc-50,
+.theme-dark-nordic .bg-zinc-50 {
+  background-color: var(--theme-input-bg) !important;
+}
+
+/* Target primary and nearby primary text colors */
+.theme-dark-tech .text-zinc-900,
+.theme-light-mineral .text-zinc-900,
+.theme-light-corporate .text-zinc-900,
+.theme-dark-nordic .text-zinc-900,
+.theme-dark-tech .text-zinc-800,
+.theme-light-mineral .text-zinc-800,
+.theme-light-corporate .text-zinc-800,
+.theme-dark-nordic .text-zinc-800 {
+  color: var(--theme-text-primary) !important;
+}
+
+/* Target description/secondary text colors */
+.theme-dark-tech .text-zinc-700,
+.theme-light-mineral .text-zinc-700,
+.theme-light-corporate .text-zinc-700,
+.theme-dark-nordic .text-zinc-700,
+.theme-dark-tech .text-zinc-600,
+.theme-light-mineral .text-zinc-600,
+.theme-light-corporate .text-zinc-600,
+.theme-dark-nordic .text-zinc-600 {
+  color: var(--theme-text-secondary) !important;
+}
+
+/* Target placeholder/tertiary text colors */
+.theme-dark-tech .text-zinc-500,
+.theme-light-mineral .text-zinc-500,
+.theme-light-corporate .text-zinc-500,
+.theme-dark-nordic .text-zinc-500,
+.theme-dark-tech .text-zinc-400,
+.theme-light-mineral .text-zinc-400,
+.theme-light-corporate .text-zinc-400,
+.theme-dark-nordic .text-zinc-400 {
+  color: var(--theme-text-tertiary) !important;
+}
+
+/* Target primary button backgrounds */
+.theme-dark-tech .bg-zinc-900,
+.theme-light-mineral .bg-zinc-900,
+.theme-light-corporate .bg-zinc-900,
+.theme-dark-nordic .bg-zinc-900,
+.theme-dark-tech .bg-zinc-950,
+.theme-light-mineral .bg-zinc-950,
+.theme-light-corporate .bg-zinc-950,
+.theme-dark-nordic .bg-zinc-950 {
+  background-color: var(--theme-btn-primary-bg) !important;
+  color: var(--theme-btn-primary-text) !important;
+}
+
+/* Target hover effects on primary buttons */
+.theme-dark-tech .hover\:bg-zinc-800:hover,
+.theme-light-mineral .hover\:bg-zinc-800:hover,
+.theme-light-corporate .hover\:bg-zinc-800:hover,
+.theme-dark-nordic .hover\:bg-zinc-800:hover {
+  background-color: var(--theme-btn-primary-hover) !important;
+}
+
+/* Target hover effects on background items and lists */
+.theme-dark-tech .hover\:bg-zinc-50:hover,
+.theme-light-mineral .hover\:bg-zinc-50:hover,
+.theme-light-corporate .hover\:bg-zinc-50:hover,
+.theme-dark-nordic .hover\:bg-zinc-50:hover,
+.theme-dark-tech .hover\:bg-zinc-50\/50:hover,
+.theme-light-mineral .hover\:bg-zinc-50\/50:hover,
+.theme-light-corporate .hover\:bg-zinc-50\/50:hover,
+.theme-dark-nordic .hover\:bg-zinc-50\/50:hover {
+  background-color: var(--theme-border) !important;
+}
+
+.theme-dark-tech .hover\:bg-zinc-100:hover,
+.theme-light-mineral .hover\:bg-zinc-100:hover,
+.theme-light-corporate .hover\:bg-zinc-100:hover,
+.theme-dark-nordic .hover\:bg-zinc-100:hover,
+.theme-dark-tech .hover\:bg-zinc-100\/50:hover,
+.theme-light-mineral .hover\:bg-zinc-100\/50:hover,
+.theme-light-corporate .hover\:bg-zinc-100\/50:hover,
+.theme-dark-nordic .hover\:bg-zinc-100\/50:hover {
+  background-color: var(--theme-border-strong) !important;
+}
+
+/* Target accent graphics and text highlights */
+.theme-dark-tech .bg-emerald-500,
+.theme-light-mineral .bg-emerald-500,
+.theme-light-corporate .bg-emerald-500,
+.theme-dark-nordic .bg-emerald-500 {
+  background-color: var(--theme-accent) !important;
+}
+
+.theme-dark-tech .text-emerald-500,
+.theme-light-mineral .text-emerald-500,
+.theme-light-corporate .text-emerald-500,
+.theme-dark-nordic .text-emerald-500,
+.theme-dark-tech .text-emerald-400,
+.theme-light-mineral .text-emerald-400,
+.theme-light-corporate .text-emerald-400,
+.theme-dark-nordic .text-emerald-400 {
+  color: var(--theme-accent) !important;
+}
+
+.theme-dark-tech .bg-emerald-500\/20,
+.theme-light-mineral .bg-emerald-500\/20,
+.theme-light-corporate .bg-emerald-500\/20,
+.theme-dark-nordic .bg-emerald-500\/20,
+.theme-dark-tech .bg-emerald-50,
+.theme-light-mineral .bg-emerald-50,
+.theme-light-corporate .bg-emerald-50,
+.theme-dark-nordic .bg-emerald-50,
+.theme-dark-tech .bg-emerald-100\/60,
+.theme-light-mineral .bg-emerald-100\/60,
+.theme-light-corporate .bg-emerald-100\/60,
+.theme-dark-nordic .bg-emerald-100\/60 {
+  background-color: var(--theme-accent-light) !important;
+}
+
+.theme-dark-tech .text-emerald-800,
+.theme-light-mineral .text-emerald-800,
+.theme-light-corporate .text-emerald-800,
+.theme-dark-nordic .text-emerald-800 {
+  color: var(--theme-accent-text) !important;
+}
+
+.theme-dark-tech .border-emerald-200,
+.theme-light-mineral .border-emerald-200,
+.theme-light-corporate .border-emerald-200,
+.theme-dark-nordic .border-emerald-200,
+.theme-dark-tech .border-emerald-500,
+.theme-light-mineral .border-emerald-500,
+.theme-light-corporate .border-emerald-500,
+.theme-dark-nordic .border-emerald-500 {
+  border-color: var(--theme-accent) !important;
+}
+
+.theme-dark-tech .ring-emerald-500\/20,
+.theme-light-mineral .ring-emerald-500\/20,
+.theme-light-corporate .ring-emerald-500\/20,
+.theme-dark-nordic .ring-emerald-500\/20 {
+  --tw-ring-color: var(--theme-accent) !important;
+}
+
+/* Ensure focus states on inputs use proper focus ring/borders */
+.theme-dark-tech .focus\:border-zinc-900:focus,
+.theme-light-mineral .focus\:border-zinc-900:focus,
+.theme-light-corporate .focus\:border-zinc-900:focus,
+.theme-dark-nordic .focus\:border-zinc-900:focus {
+  border-color: var(--theme-accent) !important;
+}
+
+.theme-dark-tech .focus\:ring-zinc-900:focus,
+.theme-light-mineral .focus\:ring-zinc-900:focus,
+.theme-light-corporate .focus\:ring-zinc-900:focus,
+.theme-dark-nordic .focus\:ring-zinc-900:focus {
+  --tw-ring-color: var(--theme-accent) !important;
+}

@@ -1,0 +1,30 @@
+{
+  "collections": {
+    "users": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "displayName": { "type": "string" },
+          "createdAt": { "type": "string" }
+        },
+        "required": ["email"]
+      },
+      "subcollections": {
+        "playlists": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "songs": { "type": "array" },
+              "createdAt": { "type": "number" },
+              "updatedAt": { "type": "number" }
+            },
+            "required": ["name", "songs"]
+          }
+        }
+      }
+    }
+  }
+}
